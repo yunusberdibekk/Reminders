@@ -10,14 +10,18 @@ import UIKit
 final class ReminderListTableViewCell: UITableViewCell {
     static let reuseIdentifier: String = "ReminderListTableViewCell"
 
+    private var reminder: Reminder? {
+        didSet {
+            updateCheckedButton()
+        }
+    }
+
     private let checkedButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.configuration = .filled()
         button.configuration?.cornerStyle = .capsule
         button.configuration?.baseBackgroundColor = .systemBackground
-        button.configuration?.image = UIImage(systemName: "checkmark.circle")?
-            .withTintColor(.lightGray, renderingMode: .alwaysOriginal)
         return button
     }()
 
@@ -34,6 +38,7 @@ final class ReminderListTableViewCell: UITableViewCell {
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+        accessoryType = .disclosureIndicator
         prepareCheckedButton()
         prepareTitleLabel()
     }
@@ -61,22 +66,28 @@ final class ReminderListTableViewCell: UITableViewCell {
         NSLayoutConstraint.activate([
             titleLabel.topAnchor.constraint(equalToSystemSpacingBelow: topAnchor, multiplier: 2),
             trailingAnchor.constraint(equalToSystemSpacingAfter: titleLabel.trailingAnchor, multiplier: 2),
-            bottomAnchor.constraint(equalToSystemSpacingBelow: titleLabel.bottomAnchor, multiplier: 2),
+            bottomAnchor.constraint(equalToSystemSpacingBelow: titleLabel.bottomAnchor, multiplier: 4),
             titleLabel.widthAnchor.constraint(equalToConstant: frame.width * 1),
         ])
+    }
+
+    private func updateCheckedButton() {
+        guard let reminder else { return }
+        checkedButton.configuration?.image = UIImage(systemName: "checkmark.circle")?
+            .withTintColor(reminder.isChecked ? .systemGreen : .lightGray, renderingMode: .alwaysOriginal)
     }
 
     @objc
     private func didTapCheckedButton() {
         UIView.animate(springDuration: 0.5) {
-            checkedButton.configuration?.image = UIImage(systemName: "checkmark.circle")?
-                .withTintColor(.systemGreen, renderingMode: .alwaysOriginal)
+            reminder?.isChecked.toggle()
         }
     }
 }
 
 extension ReminderListTableViewCell {
-    public func configure(with title: String) {
-        titleLabel.text = title
+    public func configure(for reminder: Reminder) {
+        self.reminder = reminder
+        titleLabel.text = reminder.title
     }
 }

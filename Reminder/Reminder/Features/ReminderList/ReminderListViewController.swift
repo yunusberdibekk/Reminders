@@ -7,7 +7,7 @@
 
 import UIKit
 
-protocol ReminderListViewControllerInterface: AnyObject {
+protocol ReminderListViewControllerInterface: AnyObject, Presentable {
     func prepareViewController()
     func prepareTableView()
 }
@@ -36,7 +36,7 @@ extension ReminderListViewController: ReminderListViewControllerInterface {
     func prepareViewController() {
         view.backgroundColor = .systemBackground
         title = "Reminders"
-        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: nil, action: nil)
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(didTapCreateButton))
     }
 
     func prepareTableView() {
@@ -59,6 +59,10 @@ extension ReminderListViewController: ReminderListViewControllerInterface {
                 multiplier: 0)
         ])
     }
+
+    @objc private func didTapCreateButton() {
+        viewModel.didTapCreateButton()
+    }
 }
 
 extension ReminderListViewController: UITableViewDataSource, UITableViewDelegate {
@@ -67,20 +71,20 @@ extension ReminderListViewController: UITableViewDataSource, UITableViewDelegate
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        110
+        viewModel.reminders.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(
             withIdentifier: ReminderListTableViewCell.reuseIdentifier,
             for: indexPath) as! ReminderListTableViewCell
-
+        let reminder = viewModel.reminders[indexPath.row]
         cell.contentView.isUserInteractionEnabled = false
-        cell.configure(with: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.")
+        cell.configure(for: reminder)
         return cell
     }
-    
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        100
+
+    func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
     }
 }

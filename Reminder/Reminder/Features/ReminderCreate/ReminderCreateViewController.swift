@@ -10,5 +10,6 @@ import UIKit
 final class ReminderCreateViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.backgroundColor = .systemBackground
     }
 }

@@ -9,13 +9,35 @@ import Foundation
 
 protocol ReminderListViewModelInterface {
     var view: ReminderListViewControllerInterface? { get set }
+    var reminders: [Reminder] { get }
 
     func viewDidLoad()
     func viewWillAppear()
+    func didTapCreateButton()
 }
 
 final class ReminderListViewModel {
     weak var view: ReminderListViewControllerInterface?
+    private(set) var reminders: [Reminder] = [
+        .init(
+            id: UUID().uuidString,
+            title: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+            description: "",
+            endingDate: .now,
+            isChecked: true),
+        .init(
+            id: UUID().uuidString,
+            title: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+            description: "",
+            endingDate: .now,
+            isChecked: false),
+        .init(
+            id: UUID().uuidString,
+            title: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+            description: "",
+            endingDate: .now,
+            isChecked: true),
+    ]
 }
 
 extension ReminderListViewModel: ReminderListViewModelInterface {
@@ -25,4 +47,8 @@ extension ReminderListViewModel: ReminderListViewModelInterface {
     }
 
     func viewWillAppear() {}
+
+    func didTapCreateButton() {
+        view?.present(target: ReminderCreateViewController())
+    }
 }
