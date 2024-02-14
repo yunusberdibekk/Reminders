@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  ReminderCreateViewController.swift
 //  Reminder
 //
 //  Created by Yunus Emre Berdibek on 13.02.2024.
@@ -7,13 +7,8 @@
 
 import UIKit
 
-class ViewController: UIViewController {
-
+final class ReminderCreateViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
     }
-
-
 }
-
