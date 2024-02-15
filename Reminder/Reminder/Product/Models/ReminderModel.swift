@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Reminder {
+struct Reminder: Codable {
     let id: String
     var title: String
     var description: String

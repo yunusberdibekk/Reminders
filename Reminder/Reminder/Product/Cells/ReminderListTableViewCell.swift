@@ -54,7 +54,7 @@ final class ReminderListTableViewCell: UITableViewCell {
 
         NSLayoutConstraint.activate([
             checkedButton.topAnchor.constraint(equalToSystemSpacingBelow: topAnchor, multiplier: 2),
-            checkedButton.leadingAnchor.constraint(equalToSystemSpacingAfter: leadingAnchor, multiplier: 2),
+            checkedButton.leadingAnchor.constraint(equalToSystemSpacingAfter: leadingAnchor, multiplier: 1),
             checkedButton.widthAnchor.constraint(equalToConstant: frame.width * 0.1),
             checkedButton.heightAnchor.constraint(equalToConstant: frame.width * 0.1),
         ])

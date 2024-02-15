@@ -10,6 +10,7 @@ import UIKit
 protocol ReminderListViewControllerInterface: AnyObject, Presentable {
     func prepareViewController()
     func prepareTableView()
+    func reloadTableView()
 }
 
 final class ReminderListViewController: UIViewController {
@@ -58,6 +59,12 @@ extension ReminderListViewController: ReminderListViewControllerInterface {
                 equalToSystemSpacingBelow: view.safeAreaLayoutGuide.bottomAnchor,
                 multiplier: 0)
         ])
+    }
+
+    func reloadTableView() {
+        DispatchQueue.main.async { [weak self] in
+            self?.tableView.reloadData()
+        }
     }
 
     @objc private func didTapCreateButton() {
