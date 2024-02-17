@@ -13,6 +13,8 @@ protocol Presentable {
 
 extension Presentable where Self: UIViewController {
     func present(target: UIViewController) {
-        self.present(target, animated: true)
+        self.present(
+            UINavigationController(rootViewController: target),
+            animated: true)
     }
 }
