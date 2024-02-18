@@ -8,7 +8,7 @@
 import Foundation
 
 enum UserDefaultsErrors: String, Error {
-    case unableToReminders
-    case alreadyInReminders
-    case invalidData
+    case unableToReminders = "Unable to reminders list"
+    case alreadyInReminders = "This reminder already in reminders list."
+    case invalidData = "Invalid data"
 }

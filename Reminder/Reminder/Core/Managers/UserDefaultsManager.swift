@@ -28,7 +28,7 @@ extension UserDefaultsManagerInterface {
             Result<T, UserDefaultsErrors>) -> Void)
     {
         guard let data = UserDefaults.standard.object(forKey: key.rawValue) as? Data else {
-            completion(.failure(.invalidData))
+            completion(.success([] as! T))
             return
         }
 
@@ -63,28 +63,8 @@ extension UserDefaultsManagerInterface {
     }
 }
 
-struct ReminderDefaults: UserDefaultsManagerInterface {
-    func update(
-        with reminder: Reminder,
-        action: UserDefaultsActions,
-        completion: @escaping (UserDefaultsErrors?) -> Void)
-    {
-        fetchObject(.reminders, expecting: [Reminder].self) { result in
-            switch result {
-            case .success(var reminders):
-                switch action {
-                case .add:
-                    reminders.append(reminder)
-                case .remove:
-                    reminders.removeAll(where: { $0.id == reminder.id })
-                }
+final class UserDefaultsManager: UserDefaultsManagerInterface {
+    static let shared: UserDefaultsManager = .init()
 
-                completion(self.saveObject(
-                    .reminders,
-                    expecting: reminders))
-            case .failure(let error):
-                completion(error)
-            }
-        }
-    }
+    private init() {}
 }

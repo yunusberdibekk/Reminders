@@ -11,6 +11,7 @@ protocol ReminderListViewControllerInterface: AnyObject, Presentable {
     func prepareViewController()
     func prepareTableView()
     func reloadTableView()
+    func prepareObservers()
 }
 
 final class ReminderListViewController: UIViewController {
@@ -37,7 +38,7 @@ extension ReminderListViewController: ReminderListViewControllerInterface {
     func prepareViewController() {
         view.backgroundColor = .systemBackground
         title = "Reminders"
-        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(didTapCreateButton))
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(didTappedCreateButton))
     }
 
     func prepareTableView() {
@@ -67,8 +68,20 @@ extension ReminderListViewController: ReminderListViewControllerInterface {
         }
     }
 
-    @objc private func didTapCreateButton() {
-        viewModel.didTapCreateButton()
+    func prepareObservers() {
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(updateReminderList),
+            name: .updateReminderList,
+            object: nil)
+    }
+
+    @objc private func didTappedCreateButton() {
+        viewModel.didTappedCreateButton()
+    }
+
+    @objc private func updateReminderList() {
+        viewModel.didCalledObservers()
     }
 }
 

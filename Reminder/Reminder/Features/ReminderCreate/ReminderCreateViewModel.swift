@@ -9,7 +9,7 @@ import Foundation
 
 protocol ReminderCreateViewModelInterface {
     var view: ReminderCreateViewControllerInterface? { get set }
-//    var userDefaultsManager: UserDefaultsManagerInterface { get }
+    var reminderDefaultsManager: UserDefaultsManagerInterface { get }
 
     func viewDidLoad()
     func didTapCancelButton()
@@ -18,12 +18,16 @@ protocol ReminderCreateViewModelInterface {
 
 final class ReminderCreateViewModel: ReminderCreateViewModelInterface {
     weak var view: ReminderCreateViewControllerInterface?
-    private let reminderDefaultManager: ReminderDefaultsManager = .init()
-    //  private(set) var userDefaultsManager: UserDefaultsManagerInterface
+    private(set) var reminderDefaultsManager: UserDefaultsManagerInterface
 
-//    init(userDefaultsManager: UserDefaultsManagerInterface = UserDefaultsManager.shared) {
-//        self.userDefaultsManager = userDefaultsManager
-//    }
+    init(reminderDefaultsManager: UserDefaultsManagerInterface = UserDefaultsManager.shared) {
+        self.reminderDefaultsManager = reminderDefaultsManager
+    }
+
+    // Burası interface eklenmeli mi =
+    private func postNotification() {
+        NotificationCenter.default.post(name: .updateReminderList, object: nil)
+    }
 }
 
 extension ReminderCreateViewModel {
@@ -43,14 +47,19 @@ extension ReminderCreateViewModel {
             description: view?.reminderDescription,
             endingDate: isOn ? date : nil,
             isChecked: false)
-        reminderDefaultManager.update(with: reminder, actionType: .add) { error in
-            if error == nil {
-                print("işlem başarılı")
-            } else {
-                print("işlem başarısız")
+
+        reminderDefaultsManager.fetchObject(.reminders, expecting: [Reminder].self) { [weak self] result in
+            switch result {
+            case .success(var reminders):
+                guard !reminders.contains(where: { $0.id == reminder.id }) else { return }
+                reminders.append(reminder)
+                let error = self?.reminderDefaultsManager.saveObject(.reminders, expecting: reminders)
+                guard error == nil else { print("Başarısız"); return } // Show error
+                self?.postNotification()
+                self?.view?.dismiss()
+            case .failure(let error):
+                print(error.localizedDescription)
             }
         }
-
-        // SEND NOTİFİCATİON
     }
 }

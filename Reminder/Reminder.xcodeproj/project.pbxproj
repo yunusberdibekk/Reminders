@@ -25,10 +25,10 @@
 		BEE3089E2B81076100F79B43 /* BodyLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEE3089D2B81076100F79B43 /* BodyLabel.swift */; };
 		BEE308A02B81078100F79B43 /* SFSymbolView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEE3089F2B81078100F79B43 /* SFSymbolView.swift */; };
 		BEE308A22B8107AC00F79B43 /* CustomTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEE308A12B8107AC00F79B43 /* CustomTextField.swift */; };
-		BEE308A82B815A9000F79B43 /* ReminderDefaultsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEE308A72B815A9000F79B43 /* ReminderDefaultsManager.swift */; };
 		BEE308AC2B816E8100F79B43 /* UserDefaultsKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEE308AB2B816E8100F79B43 /* UserDefaultsKeys.swift */; };
 		BEE308AE2B816E8900F79B43 /* UserDefaultsErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEE308AD2B816E8900F79B43 /* UserDefaultsErrors.swift */; };
 		BEE308B02B816EA700F79B43 /* UserDefaultsActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEE308AF2B816EA700F79B43 /* UserDefaultsActions.swift */; };
+		BEE308B32B82937900F79B43 /* Notification+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEE308B22B82937900F79B43 /* Notification+Extensions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -52,10 +52,10 @@
 		BEE3089D2B81076100F79B43 /* BodyLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BodyLabel.swift; sourceTree = "<group>"; };
 		BEE3089F2B81078100F79B43 /* SFSymbolView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SFSymbolView.swift; sourceTree = "<group>"; };
 		BEE308A12B8107AC00F79B43 /* CustomTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextField.swift; sourceTree = "<group>"; };
-		BEE308A72B815A9000F79B43 /* ReminderDefaultsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderDefaultsManager.swift; sourceTree = "<group>"; };
 		BEE308AB2B816E8100F79B43 /* UserDefaultsKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsKeys.swift; sourceTree = "<group>"; };
 		BEE308AD2B816E8900F79B43 /* UserDefaultsErrors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsErrors.swift; sourceTree = "<group>"; };
 		BEE308AF2B816EA700F79B43 /* UserDefaultsActions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsActions.swift; sourceTree = "<group>"; };
+		BEE308B22B82937900F79B43 /* Notification+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Notification+Extensions.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -122,6 +122,7 @@
 		BE6758CB2B7BD62E00C7BFFF /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				BEE308B12B82936800F79B43 /* Extensions */,
 				BEE308A92B816E6700F79B43 /* Enums */,
 				BE6758DF2B7D656D00C7BFFF /* Protocols */,
 			);
@@ -201,7 +202,6 @@
 			isa = PBXGroup;
 			children = (
 				BE6758E52B7DF26700C7BFFF /* UserDefaultsManager.swift */,
-				BEE308A72B815A9000F79B43 /* ReminderDefaultsManager.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -265,6 +265,14 @@
 				BEE308AF2B816EA700F79B43 /* UserDefaultsActions.swift */,
 			);
 			path = UserDefaults;
+			sourceTree = "<group>";
+		};
+		BEE308B12B82936800F79B43 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				BEE308B22B82937900F79B43 /* Notification+Extensions.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -343,6 +351,7 @@
 				BE6758B62B7BD11600C7BFFF /* ReminderListViewController.swift in Sources */,
 				BE6758E62B7DF26700C7BFFF /* UserDefaultsManager.swift in Sources */,
 				BEE308AC2B816E8100F79B43 /* UserDefaultsKeys.swift in Sources */,
+				BEE308B32B82937900F79B43 /* Notification+Extensions.swift in Sources */,
 				BEE308A22B8107AC00F79B43 /* CustomTextField.swift in Sources */,
 				BE6758B22B7BD11600C7BFFF /* AppDelegate.swift in Sources */,
 				BEE308982B81070600F79B43 /* SecondSectionView.swift in Sources */,
@@ -353,7 +362,6 @@
 				BE6758E82B7E4FD000C7BFFF /* ReminderCreateViewModel.swift in Sources */,
 				BEE308962B8106FE00F79B43 /* FirstSectionView.swift in Sources */,
 				BEE308AE2B816E8900F79B43 /* UserDefaultsErrors.swift in Sources */,
-				BEE308A82B815A9000F79B43 /* ReminderDefaultsManager.swift in Sources */,
 				BE6758B42B7BD11600C7BFFF /* SceneDelegate.swift in Sources */,
 				BE6758E12B7D659A00C7BFFF /* Presentable.swift in Sources */,
 				BEE308A02B81078100F79B43 /* SFSymbolView.swift in Sources */,

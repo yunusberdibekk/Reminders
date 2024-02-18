@@ -9,57 +9,44 @@ import Foundation
 
 protocol ReminderListViewModelInterface {
     var view: ReminderListViewControllerInterface? { get set }
-    var userDefaultsManager: UserDefaultsManagerInterface { get }
-
+    var reminderDefaultsManager: UserDefaultsManagerInterface { get }
     var reminders: [Reminder] { get }
 
     func viewDidLoad()
     func viewWillAppear()
-    func didTapCreateButton()
+    func didCalledObservers()
+    func didTappedCreateButton()
 }
 
 final class ReminderListViewModel {
     weak var view: ReminderListViewControllerInterface?
-    private(set) var userDefaultsManager: UserDefaultsManagerInterface
+    private(set) var reminderDefaultsManager: UserDefaultsManagerInterface
     private(set) var reminders: [Reminder] = []
-//    private let reminderDefaultManager = ReminderDefaultsManager()
 
-    init(userDefaultsManager: UserDefaultsManagerInterface = ReminderDefaults()) {
-        self.userDefaultsManager = userDefaultsManager
+    init(reminderDefaultsManager: UserDefaultsManagerInterface = UserDefaultsManager.shared) {
+        self.reminderDefaultsManager = reminderDefaultsManager
     }
 
     private func fetchReminders() {
-        userDefaultsManager.fetchObject(.reminders, expecting: [Reminder].self) { result in
+        reminderDefaultsManager.fetchObject(.reminders, expecting: [Reminder].self) { [weak self] result in
             switch result {
             case .success(let reminders):
-                dump(reminders)
+                DispatchQueue.main.async {
+                    self?.reminders = reminders
+                    self?.view?.reloadTableView()
+                }
             case .failure(let error):
                 print(error.localizedDescription)
             }
         }
     }
-
-//    private func fetchReminders() {
-//        reminderDefaultManager.fetch { [weak self] result in
-//            guard let self else { return }
-//            switch result {
-//            case .success(let models):
-//                dump(models)
-//                DispatchQueue.main.async {
-//                    self.reminders = models
-//                    self.view?.reloadTableView()
-//                }
-//            case .failure(let error):
-//                print(error.localizedDescription)
-//            }
-//        }
-//    }
 }
 
 extension ReminderListViewModel: ReminderListViewModelInterface {
     func viewDidLoad() {
         view?.prepareViewController()
         view?.prepareTableView()
+        view?.prepareObservers()
         fetchReminders()
     }
 
@@ -67,7 +54,11 @@ extension ReminderListViewModel: ReminderListViewModelInterface {
         fetchReminders()
     }
 
-    func didTapCreateButton() {
+    func didTappedCreateButton() {
         view?.present(target: ReminderCreateViewController())
+    }
+
+    func didCalledObservers() {
+        fetchReminders()
     }
 }
