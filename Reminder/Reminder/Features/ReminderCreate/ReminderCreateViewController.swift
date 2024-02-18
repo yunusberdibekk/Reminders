@@ -8,21 +8,62 @@
 import UIKit
 
 protocol ReminderCreateViewControllerInterface: AnyObject {
+    var reminderTitle: String? { get }
+    var reminderDescription: String? { get }
+    var isOn: Bool { get }
     var date: Date { get }
 
     func prepareViewController()
+    func dismiss()
 }
 
 final class ReminderCreateViewController: UIViewController {
-    private lazy var firstSectionView: FirstSectionView = .init()
-    private lazy var secondSectionView: SecondSectionView = .init()
+    private lazy var viewModel: ReminderCreateViewModelInterface = ReminderCreateViewModel()
+
+    private let firstSectionView: FirstSectionView = .init()
+    private let secondSectionView: SecondSectionView = .init()
+
+    var reminderTitle: String? {
+        firstSectionView.titleTextField.text
+    }
+
+    var reminderDescription: String? {
+        firstSectionView.descriptionTextField.text
+    }
+
+    var isOn: Bool {
+        secondSectionView.switchView.isOn
+    }
+
+    var date: Date {
+        secondSectionView.datePicker.date
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        viewModel.view = self
+        viewModel.viewDidLoad()
+    }
+
+    @objc private func didTapCancelButton() {
+        viewModel.didTapCancelButton()
+    }
+
+    @objc private func didTapDoneButton() {
+        viewModel.didTapDoneButton()
+    }
+}
+
+extension ReminderCreateViewController: ReminderCreateViewControllerInterface {
+    func prepareViewController() {
         view.backgroundColor = .secondarySystemBackground
         prepareNavigationBar()
         prepareFirstSectionView()
         prepareSecondSectionView()
+    }
+
+    func dismiss() {
+        dismiss(animated: true)
     }
 }
 
@@ -32,13 +73,13 @@ extension ReminderCreateViewController {
         navigationItem.leftBarButtonItem = UIBarButtonItem(
             title: "Cancel",
             style: .plain,
-            target: nil,
-            action: nil)
+            target: self,
+            action: #selector(didTapCancelButton))
         navigationItem.rightBarButtonItem = UIBarButtonItem(
             title: "Done",
             style: .done,
-            target: nil,
-            action: nil)
+            target: self,
+            action: #selector(didTapDoneButton))
     }
 
     private func prepareFirstSectionView() {

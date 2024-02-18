@@ -9,8 +9,8 @@ import Foundation
 
 struct Reminder: Codable {
     let id: String
-    var title: String
-    var description: String
-    var endingDate: Date
+    let title: String
+    var description: String?
+    var endingDate: Date?
     var isChecked: Bool
 }

@@ -7,50 +7,52 @@
 
 import Foundation
 
-enum UserDefaultsKeys: String {
-    case reminders
-}
-
 protocol UserDefaultsManagerInterface {
-    func fetchObject<T: Codable>(_ key: UserDefaultsKeys,
-                                 expecting type: T.Type,
-                                 completion: @escaping (Result<T, Error>) -> Void)
-    func saveObject<T: Encodable>(_ key: UserDefaultsKeys,
-                                  expecting type: T) -> Error?
+    func fetchObject<T: Codable>(
+        _ key: UserDefaultsKeys,
+        expecting type: T.Type,
+        completion: @escaping (Result<T, UserDefaultsErrors>) -> Void)
+
+    func saveObject<T: Codable>(
+        _ key: UserDefaultsKeys,
+        expecting type: T) -> UserDefaultsErrors?
+
     func removeObject(_ key: UserDefaultsKeys)
 }
 
-final class UserDefaultsManager: UserDefaultsManagerInterface {
-    static let shared: UserDefaultsManager = .init()
-
-    private init() {}
-
-    func fetchObject<T: Codable>(_ key: UserDefaultsKeys,
-                                 expecting type: T.Type,
-                                 completion: @escaping (Result<T, Error>) -> Void)
+extension UserDefaultsManagerInterface {
+    func fetchObject<T: Codable>(
+        _ key: UserDefaultsKeys,
+        expecting type: T.Type,
+        completion: @escaping (
+            Result<T, UserDefaultsErrors>) -> Void)
     {
         guard let data = UserDefaults.standard.object(forKey: key.rawValue) as? Data else {
+            completion(.failure(.invalidData))
             return
         }
 
         do {
-            let results = try JSONDecoder().decode(type.self, from: data)
+            let decoder = JSONDecoder()
+            let objects = try decoder.decode(type.self, from: data)
 
-            completion(.success(results))
+            completion(.success(objects))
         } catch {
-            completion(.failure(error))
+            completion(.failure(.unableToReminders))
         }
     }
 
-    func saveObject<T: Encodable>(_ key: UserDefaultsKeys,
-                                  expecting type: T) -> Error?
+    func saveObject<T: Codable>(
+        _ key: UserDefaultsKeys,
+        expecting value: T) -> UserDefaultsErrors?
     {
         do {
-            let encodedModels = try JSONEncoder().encode(type.self)
+            let encoder = JSONEncoder()
+            let encodedModels = try encoder.encode(value)
 
             UserDefaults.standard.setValue(encodedModels, forKey: key.rawValue)
         } catch {
-            return error
+            return .unableToReminders
         }
 
         return nil
@@ -58,5 +60,31 @@ final class UserDefaultsManager: UserDefaultsManagerInterface {
 
     func removeObject(_ key: UserDefaultsKeys) {
         UserDefaults.standard.removeObject(forKey: key.rawValue)
+    }
+}
+
+struct ReminderDefaults: UserDefaultsManagerInterface {
+    func update(
+        with reminder: Reminder,
+        action: UserDefaultsActions,
+        completion: @escaping (UserDefaultsErrors?) -> Void)
+    {
+        fetchObject(.reminders, expecting: [Reminder].self) { result in
+            switch result {
+            case .success(var reminders):
+                switch action {
+                case .add:
+                    reminders.append(reminder)
+                case .remove:
+                    reminders.removeAll(where: { $0.id == reminder.id })
+                }
+
+                completion(self.saveObject(
+                    .reminders,
+                    expecting: reminders))
+            case .failure(let error):
+                completion(error)
+            }
+        }
     }
 }

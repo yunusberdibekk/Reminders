@@ -14,7 +14,7 @@ protocol ReminderListViewControllerInterface: AnyObject, Presentable {
 }
 
 final class ReminderListViewController: UIViewController {
-    private lazy var viewModel: ReminderListViewModelInterface = ReminderListViewModel()
+    private let viewModel: ReminderListViewModel = .init()
 
     private let tableView: UITableView = {
         let tableView = UITableView()

@@ -17,7 +17,7 @@ final class SecondSectionView: UIView {
         text: "Date",
         textColor: .label)
 
-    private let switchView: UISwitch = {
+    let switchView: UISwitch = {
         let switchView = UISwitch()
         switchView.translatesAutoresizingMaskIntoConstraints = false
         switchView.isOn = false
