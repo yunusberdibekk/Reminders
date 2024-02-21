@@ -36,7 +36,7 @@ final class ReminderListViewController: UIViewController {
 
 extension ReminderListViewController: ReminderListViewControllerInterface {
     func prepareViewController() {
-        view.backgroundColor = .systemBackground
+        view.backgroundColor = .secondarySystemBackground
         title = "Reminders"
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(didTappedCreateButton))
     }
@@ -57,7 +57,7 @@ extension ReminderListViewController: ReminderListViewControllerInterface {
                 equalToSystemSpacingAfter: tableView.trailingAnchor,
                 multiplier: 0),
             tableView.bottomAnchor.constraint(
-                equalToSystemSpacingBelow: view.safeAreaLayoutGuide.bottomAnchor,
+                equalToSystemSpacingBelow: view.bottomAnchor,
                 multiplier: 0)
         ])
     }
@@ -99,12 +99,26 @@ extension ReminderListViewController: UITableViewDataSource, UITableViewDelegate
             withIdentifier: ReminderListTableViewCell.reuseIdentifier,
             for: indexPath) as! ReminderListTableViewCell
         let reminder = viewModel.reminders[indexPath.row]
+
         cell.contentView.isUserInteractionEnabled = false
-        cell.configure(for: reminder)
+        cell.configure(with: reminder)
         return cell
     }
 
     func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
+    }
+
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        let reminder = viewModel.reminders[indexPath.row]
+        let descStringCount = reminder.description?.count ?? 0
+
+        if descStringCount >= 100 {
+            return 100
+        } else if descStringCount >= 75 {
+            return 75
+        } else {
+            return 60
+        }
     }
 }

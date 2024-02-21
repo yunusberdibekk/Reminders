@@ -33,7 +33,7 @@ final class SecondSectionView: UIView {
         datePicker.alpha = 0
         datePicker.datePickerMode = .date
         datePicker.preferredDatePickerStyle = .inline
-        datePicker.locale = .current
+        //    datePicker.locale = .current
         datePicker.date = .now
         datePicker.minimumDate = .now
         datePicker.maximumDate = .distantFuture

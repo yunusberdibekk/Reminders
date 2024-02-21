@@ -29,7 +29,6 @@ final class SFSymbolView: UIImageView {
 
 extension SFSymbolView {
     private func prepareView() {
-        translatesAutoresizingMaskIntoConstraints = false
         contentMode = .center
         clipsToBounds = true
         layer.cornerRadius = 5

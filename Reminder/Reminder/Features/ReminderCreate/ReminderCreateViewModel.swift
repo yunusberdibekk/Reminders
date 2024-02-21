@@ -20,6 +20,8 @@ final class ReminderCreateViewModel: ReminderCreateViewModelInterface {
     weak var view: ReminderCreateViewControllerInterface?
     private(set) var reminderDefaultsManager: UserDefaultsManagerInterface
 
+    var viewController: ReminderCreateViewController = .init()
+
     init(reminderDefaultsManager: UserDefaultsManagerInterface = UserDefaultsManager.shared) {
         self.reminderDefaultsManager = reminderDefaultsManager
     }

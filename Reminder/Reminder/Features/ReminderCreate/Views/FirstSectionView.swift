@@ -49,6 +49,9 @@ extension FirstSectionView {
     }
 
     private func prepareStackView() {
+        titleTextField.translatesAutoresizingMaskIntoConstraints = false
+        descriptionTextField.translatesAutoresizingMaskIntoConstraints = false
+
         stackView.addArrangedSubview(titleTextField)
         stackView.addArrangedSubview(dividerView)
         stackView.addArrangedSubview(descriptionTextField)
@@ -61,5 +64,6 @@ extension FirstSectionView {
             bottomAnchor.constraint(equalToSystemSpacingBelow: stackView.bottomAnchor, multiplier: 1)
         ])
         dividerView.heightAnchor.constraint(equalToConstant: 1).isActive = true
+        titleTextField.becomeFirstResponder()
     }
 }

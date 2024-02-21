@@ -29,6 +29,7 @@
 		BEE308AE2B816E8900F79B43 /* UserDefaultsErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEE308AD2B816E8900F79B43 /* UserDefaultsErrors.swift */; };
 		BEE308B02B816EA700F79B43 /* UserDefaultsActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEE308AF2B816EA700F79B43 /* UserDefaultsActions.swift */; };
 		BEE308B32B82937900F79B43 /* Notification+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEE308B22B82937900F79B43 /* Notification+Extensions.swift */; };
+		BEE308B52B83594200F79B43 /* TitleLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEE308B42B83594200F79B43 /* TitleLabel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -56,6 +57,7 @@
 		BEE308AD2B816E8900F79B43 /* UserDefaultsErrors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsErrors.swift; sourceTree = "<group>"; };
 		BEE308AF2B816EA700F79B43 /* UserDefaultsActions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsActions.swift; sourceTree = "<group>"; };
 		BEE308B22B82937900F79B43 /* Notification+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Notification+Extensions.swift"; sourceTree = "<group>"; };
+		BEE308B42B83594200F79B43 /* TitleLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleLabel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -229,6 +231,7 @@
 			isa = PBXGroup;
 			children = (
 				BEE3089D2B81076100F79B43 /* BodyLabel.swift */,
+				BEE308B42B83594200F79B43 /* TitleLabel.swift */,
 			);
 			path = Labels;
 			sourceTree = "<group>";
@@ -363,6 +366,7 @@
 				BEE308962B8106FE00F79B43 /* FirstSectionView.swift in Sources */,
 				BEE308AE2B816E8900F79B43 /* UserDefaultsErrors.swift in Sources */,
 				BE6758B42B7BD11600C7BFFF /* SceneDelegate.swift in Sources */,
+				BEE308B52B83594200F79B43 /* TitleLabel.swift in Sources */,
 				BE6758E12B7D659A00C7BFFF /* Presentable.swift in Sources */,
 				BEE308A02B81078100F79B43 /* SFSymbolView.swift in Sources */,
 			);

@@ -24,7 +24,6 @@ final class CustomTextField: UITextField {
     }
 
     private func prepareTextField() {
-        translatesAutoresizingMaskIntoConstraints = false
         font = UIFont.preferredFont(forTextStyle: .body)
         adjustsFontSizeToFitWidth = true
         minimumFontSize = 12

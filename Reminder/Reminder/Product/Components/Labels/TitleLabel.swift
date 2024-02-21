@@ -1,13 +1,13 @@
 //
-//  BodyLabel.swift
+//  TitleLabel.swift
 //  Reminder
 //
-//  Created by Yunus Emre Berdibek on 17.02.2024.
+//  Created by Yunus Emre Berdibek on 19.02.2024.
 //
 
 import UIKit
 
-final class BodyLabel: UILabel {
+final class TitleLabel: UILabel {
     override init(frame: CGRect) {
         super.init(frame: frame)
     }
@@ -25,9 +25,11 @@ final class BodyLabel: UILabel {
     }
 }
 
-extension BodyLabel {
+extension TitleLabel {
     private func prepareLabel() {
-        font = UIFont.preferredFont(forTextStyle: .body)
+        font = UIFont.preferredFont(forTextStyle: .title1)
+        adjustsFontSizeToFitWidth = true
+        minimumScaleFactor = 12
         numberOfLines = 0
     }
 }
