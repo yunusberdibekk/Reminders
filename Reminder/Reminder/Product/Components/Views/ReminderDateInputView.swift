@@ -121,12 +121,15 @@ extension ReminderDateInputView {
         verticalStackView.translatesAutoresizingMaskIntoConstraints = false
         addSubview(verticalStackView)
 
-        NSLayoutConstraint.activate([
-            verticalStackView.topAnchor.constraint(equalToSystemSpacingBelow: topAnchor, multiplier: 2),
-            verticalStackView.leadingAnchor.constraint(equalToSystemSpacingAfter: leadingAnchor, multiplier: 1),
-            trailingAnchor.constraint(equalToSystemSpacingAfter: verticalStackView.trailingAnchor, multiplier: 1),
-            bottomAnchor.constraint(equalToSystemSpacingBelow: verticalStackView.bottomAnchor, multiplier: 1),
-        ])
-        imageView.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 0.1).isActive = true
+        verticalStackView.snp.makeConstraints { make in
+            make.top.equalTo(snp.top).offset(8)
+            make.leading.equalTo(snp.leading).offset(8)
+            make.trailing.equalTo(snp.trailing).offset(-8)
+            make.bottom.equalTo(snp.bottom).offset(-8)
+        }
+
+        imageView.snp.makeConstraints { make in
+            make.width.equalToSuperview().multipliedBy(0.1)
+        }
     }
 }

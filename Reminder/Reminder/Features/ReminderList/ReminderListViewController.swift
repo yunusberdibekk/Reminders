@@ -5,6 +5,7 @@
 //  Created by Yunus Emre Berdibek on 13.02.2024.
 //
 
+import SnapKit
 import UIKit
 
 protocol ReminderListViewControllerInterface: AnyObject, Presentable {
@@ -60,20 +61,12 @@ extension ReminderListViewController: ReminderListViewControllerInterface {
         tableView.delegate = self
         tableView.dataSource = self
 
-        NSLayoutConstraint.activate([
-            tableView.topAnchor.constraint(
-                equalToSystemSpacingBelow: view.topAnchor,
-                multiplier: 1),
-            tableView.leadingAnchor.constraint(
-                equalToSystemSpacingAfter: view.leadingAnchor,
-                multiplier: 0),
-            view.trailingAnchor.constraint(
-                equalToSystemSpacingAfter: tableView.trailingAnchor,
-                multiplier: 0),
-            tableView.bottomAnchor.constraint(
-                equalToSystemSpacingBelow: view.bottomAnchor,
-                multiplier: 0)
-        ])
+        tableView.snp.makeConstraints { make in
+            make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
+            make.leading.equalTo(view.snp.leading)
+            make.trailing.equalTo(view.snp.trailing)
+            make.bottom.equalTo(view.snp.bottom)
+        }
     }
 
     func reloadTableView() {
@@ -94,7 +87,10 @@ extension ReminderListViewController: ReminderListViewControllerInterface {
 // MARK: - ReminderListViewController + ReminderListTableViewCellInterface Extension.
 
 extension ReminderListViewController: ReminderListTableViewCellInterface {
-    func didTapCheckedButton(_ reminder: Reminder?) {}
+    func didTapCheckedButton(_ reminder: Reminder?) {
+        guard let reminder else { return }
+        viewModel.didTapCheckedButton(reminder)
+    }
 
     func didTapInfoButton(_ reminder: Reminder?) {
         viewModel.didSelectRow(reminder)

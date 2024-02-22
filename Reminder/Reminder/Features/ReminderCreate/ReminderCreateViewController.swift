@@ -91,22 +91,22 @@ extension ReminderCreateViewController: ReminderCreateViewControllerInterface {
         reminderTextInputView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(reminderTextInputView)
 
-        NSLayoutConstraint.activate([
-            reminderTextInputView.topAnchor.constraint(equalToSystemSpacingBelow: view.safeAreaLayoutGuide.topAnchor, multiplier: 2),
-            reminderTextInputView.leadingAnchor.constraint(equalToSystemSpacingAfter: view.leadingAnchor, multiplier: 2),
-            view.trailingAnchor.constraint(equalToSystemSpacingAfter: reminderTextInputView.trailingAnchor, multiplier: 2),
-            reminderTextInputView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.2),
-        ])
+        reminderTextInputView.snp.makeConstraints { make in
+            make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
+            make.leading.equalTo(view.snp.leading).offset(16)
+            make.trailing.equalTo(view.snp.trailing).offset(-16)
+            make.height.equalToSuperview().multipliedBy(0.2)
+        }
     }
 
     func prepareReminderDateInputView() {
         reminderDateInputView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(reminderDateInputView)
 
-        NSLayoutConstraint.activate([
-            reminderDateInputView.topAnchor.constraint(equalToSystemSpacingBelow: reminderTextInputView.bottomAnchor, multiplier: 2),
-            reminderDateInputView.leadingAnchor.constraint(equalToSystemSpacingAfter: view.leadingAnchor, multiplier: 2),
-            view.trailingAnchor.constraint(equalToSystemSpacingAfter: reminderDateInputView.trailingAnchor, multiplier: 2),
-        ])
+        reminderDateInputView.snp.makeConstraints { make in
+            make.top.equalTo(reminderTextInputView.snp.bottom).offset(16)
+            make.leading.equalTo(view.snp.leading).offset(16)
+            make.trailing.equalTo(view.snp.trailing).offset(-16)
+        }
     }
 }
