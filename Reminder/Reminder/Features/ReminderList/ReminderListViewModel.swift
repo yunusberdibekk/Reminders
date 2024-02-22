@@ -16,6 +16,7 @@ protocol ReminderListViewModelInterface {
     func viewWillAppear()
     func didCalledObservers()
     func didTappedCreateButton()
+    func didTappedDeleteButton(at index: Int)
     func didSelectRow(_ reminder: Reminder?)
 }
 
@@ -66,5 +67,13 @@ extension ReminderListViewModel: ReminderListViewModelInterface {
     func didSelectRow(_ reminder: Reminder?) {
         guard let reminder else { return }
         view?.present(target: ReminderDetailViewController(reminder: reminder))
+    }
+
+    func didTappedDeleteButton(at index: Int) {
+        reminders.remove(at: index)
+        let error = reminderDefaultsManager.saveObject(.reminders, expecting: reminders)
+
+        guard error == nil else { print("Başarısız"); return }
+        view?.reloadTableView()
     }
 }

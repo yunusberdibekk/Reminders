@@ -137,4 +137,11 @@ extension ReminderListViewController: UITableViewDataSource, UITableViewDelegate
             return 60
         }
     }
+
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let deleteAction = UIContextualAction(style: .destructive, title: "Delete") { [weak self] _, _, _ in
+            self?.viewModel.didTappedDeleteButton(at: indexPath.row)
+        }
+        return UISwipeActionsConfiguration(actions: [deleteAction])
+    }
 }
