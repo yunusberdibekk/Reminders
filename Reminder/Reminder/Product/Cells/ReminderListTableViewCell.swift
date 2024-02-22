@@ -87,7 +87,9 @@ extension ReminderListTableViewCell {
     private func prepareCell() {
         contentView.isUserInteractionEnabled = false
         selectionStyle = .none
-        backgroundColor = .systemBackground
+        backgroundColor = .secondarySystemBackground
+        clipsToBounds = true
+        layer.cornerRadius  = 8
 
         prepareCheckedButton()
         prepareTitleLabel()

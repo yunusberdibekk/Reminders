@@ -20,7 +20,6 @@ final class ReminderListViewController: UIViewController {
 
     private let tableView: UITableView = {
         let tableView = UITableView()
-        tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.separatorStyle = .singleLine
         tableView.register(
             ReminderListTableViewCell.self,
@@ -51,12 +50,14 @@ extension ReminderListViewController {
 
 extension ReminderListViewController: ReminderListViewControllerInterface {
     func prepareViewController() {
-        view.backgroundColor = .secondarySystemBackground
+        view.backgroundColor = .systemBackground
         title = "Reminders"
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(didTappedCreateButton))
     }
 
     func prepareTableView() {
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        tableView.backgroundColor = .systemBackground
         view.addSubview(tableView)
         tableView.delegate = self
         tableView.dataSource = self
