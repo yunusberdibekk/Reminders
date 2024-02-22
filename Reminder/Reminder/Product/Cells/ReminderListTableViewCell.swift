@@ -5,6 +5,7 @@
 //  Created by Yunus Emre Berdibek on 14.02.2024.
 //
 
+import SnapKit
 import UIKit
 
 protocol ReminderListTableViewCellInterface: AnyObject {
@@ -24,7 +25,6 @@ final class ReminderListTableViewCell: UITableViewCell {
 
     private let checkedButton: UIButton = {
         let button = UIButton()
-        button.translatesAutoresizingMaskIntoConstraints = false
         button.configuration = .filled()
         button.configuration?.cornerStyle = .capsule
         button.configuration?.baseBackgroundColor = .secondarySystemBackground
@@ -39,7 +39,6 @@ final class ReminderListTableViewCell: UITableViewCell {
 
     private let titleLabel: UILabel = {
         let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.preferredFont(forTextStyle: .body)
         label.adjustsFontForContentSizeCategory = true
         label.minimumScaleFactor = 0.9
@@ -52,7 +51,6 @@ final class ReminderListTableViewCell: UITableViewCell {
 
     private let descriptionLabel: UILabel = {
         let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.preferredFont(forTextStyle: .footnote)
         label.adjustsFontForContentSizeCategory = true
         label.textAlignment = .left
@@ -99,47 +97,52 @@ extension ReminderListTableViewCell {
 
     private func prepareCheckedButton() {
         addSubview(checkedButton)
+        checkedButton.translatesAutoresizingMaskIntoConstraints = false
         checkedButton.addTarget(self, action: #selector(didTapCheckedButton), for: .touchUpInside)
 
-        NSLayoutConstraint.activate([
-            checkedButton.topAnchor.constraint(equalToSystemSpacingBelow: topAnchor, multiplier: 1),
-            checkedButton.leadingAnchor.constraint(equalToSystemSpacingAfter: leadingAnchor, multiplier: 1),
-        ])
+        checkedButton.snp.makeConstraints { make in
+            make.top.equalTo(snp.top).offset(8)
+            make.leading.equalTo(snp.leading).offset(8)
+        }
     }
 
     private func prepareTitleLabel() {
         addSubview(titleLabel)
+        titleLabel.translatesAutoresizingMaskIntoConstraints = false
 
-        NSLayoutConstraint.activate([
-            titleLabel.topAnchor.constraint(equalToSystemSpacingBelow: topAnchor, multiplier: 1),
-            trailingAnchor.constraint(equalToSystemSpacingAfter: titleLabel.trailingAnchor, multiplier: 3.5),
-            titleLabel.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 0.805),
-        ])
+        titleLabel.snp.makeConstraints { make in
+            make.top.equalTo(snp.top).offset(8)
+            make.trailing.equalTo(snp.trailing).offset(-30)
+            make.width.equalToSuperview().multipliedBy(0.805)
+        }
     }
 
     private func prepareDescriptionLabel() {
         addSubview(descriptionLabel)
+        descriptionLabel.translatesAutoresizingMaskIntoConstraints = false
 
-        NSLayoutConstraint.activate([
-            descriptionLabel.topAnchor.constraint(equalToSystemSpacingBelow: topAnchor, multiplier: 4.0),
-            trailingAnchor.constraint(equalToSystemSpacingAfter: descriptionLabel.trailingAnchor, multiplier: 3.5),
-            descriptionLabel.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 0.8),
-        ])
+        descriptionLabel.snp.makeConstraints { make in
+            make.top.equalTo(snp.top).offset(32)
+            make.trailing.equalTo(snp.trailing).offset(-30)
+            make.width.equalToSuperview().multipliedBy(0.8)
+        }
     }
 
     private func prepareInfoButton() {
         addSubview(infoButton)
+        infoButton.translatesAutoresizingMaskIntoConstraints = false
         infoButton.addTarget(self, action: #selector(didTapInfoButton), for: .touchUpInside)
 
-        NSLayoutConstraint.activate([
-            infoButton.centerYAnchor.constraint(equalTo: centerYAnchor),
-            trailingAnchor.constraint(equalToSystemSpacingAfter: infoButton.trailingAnchor, multiplier: 1),
-        ])
+        infoButton.snp.makeConstraints { make in
+            make.centerY.equalTo(snp.centerY)
+            make.trailing.equalTo(snp.trailing).offset(-8)
+        }
     }
 
     // TODO: UPDATE CHECKED BUTTON. AND GO TO USERDEFAULTS CONFİGURE THİS REMİNDER.
     @objc private func didTapCheckedButton() {
         reminder?.isChecked.toggle()
+        delegate?.didTapCheckedButton(reminder)
     }
 
     @objc private func didTapInfoButton() {

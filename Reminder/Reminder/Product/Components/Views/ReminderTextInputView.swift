@@ -5,6 +5,7 @@
 //  Created by Yunus Emre Berdibek on 22.02.2024.
 //
 
+import SnapKit
 import UIKit
 
 final class ReminderTextInputView: UIView {
@@ -73,12 +74,15 @@ extension ReminderTextInputView {
         stackView.translatesAutoresizingMaskIntoConstraints = false
         addSubview(stackView)
 
-        NSLayoutConstraint.activate([
-            stackView.topAnchor.constraint(equalToSystemSpacingBelow: topAnchor, multiplier: 1),
-            stackView.leadingAnchor.constraint(equalToSystemSpacingAfter: leadingAnchor, multiplier: 1),
-            trailingAnchor.constraint(equalToSystemSpacingAfter: stackView.trailingAnchor, multiplier: 1),
-            bottomAnchor.constraint(equalToSystemSpacingBelow: stackView.bottomAnchor, multiplier: 1),
-        ])
-        dividerView.heightAnchor.constraint(equalToConstant: 1).isActive = true
+        stackView.snp.makeConstraints { make in
+            make.top.equalTo(snp.top).offset(8)
+            make.leading.equalTo(snp.leading).offset(8)
+            make.trailing.equalTo(snp.trailing).offset(-8)
+            make.bottom.equalTo(snp.bottom).offset(-8)
+        }
+
+        dividerView.snp.makeConstraints { make in
+            make.height.equalTo(1)
+        }
     }
 }

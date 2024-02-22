@@ -17,6 +17,7 @@ protocol ReminderListViewModelInterface {
     func didCalledObservers()
     func didTappedCreateButton()
     func didTappedDeleteButton(at index: Int)
+    func didTapCheckedButton(_ reminder: Reminder)
     func didSelectRow(_ reminder: Reminder?)
 }
 
@@ -70,10 +71,35 @@ extension ReminderListViewModel: ReminderListViewModelInterface {
     }
 
     func didTappedDeleteButton(at index: Int) {
-        reminders.remove(at: index)
-        let error = reminderDefaultsManager.saveObject(.reminders, expecting: reminders)
+        reminderDefaultsManager.fetchObject(.reminders, expecting: [Reminder].self) { [weak self] result in
+            switch result {
+            case .success(var reminders):
+                reminders.remove(at: index)
+                let error = self?.reminderDefaultsManager.saveObject(.reminders, expecting: reminders)
+                guard error == nil else { print("Başarısız"); return }
 
-        guard error == nil else { print("Başarısız"); return }
-        view?.reloadTableView()
+                self?.reminders = reminders
+                self?.view?.reloadTableView()
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
+    }
+
+    func didTapCheckedButton(_ reminder: Reminder) {
+        reminderDefaultsManager.fetchObject(.reminders, expecting: [Reminder].self) { [weak self] result in
+            switch result {
+            case .success(var reminders):
+                guard let index = reminders.firstIndex(where: { $0.id == reminder.id }) else { return }
+                reminders[index] = reminder
+                let error = self?.reminderDefaultsManager.saveObject(.reminders, expecting: reminders)
+                guard error == nil else { print("Başarısız"); return }
+
+                self?.reminders = reminders
+                self?.view?.reloadTableView()
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
     }
 }
