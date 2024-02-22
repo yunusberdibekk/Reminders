@@ -16,6 +16,7 @@ protocol ReminderListViewModelInterface {
     func viewWillAppear()
     func didCalledObservers()
     func didTappedCreateButton()
+    func didSelectRow(_ reminder: Reminder?)
 }
 
 final class ReminderListViewModel {
@@ -60,5 +61,10 @@ extension ReminderListViewModel: ReminderListViewModelInterface {
 
     func didCalledObservers() {
         fetchReminders()
+    }
+
+    func didSelectRow(_ reminder: Reminder?) {
+        guard let reminder else { return }
+        view?.present(target: ReminderDetailViewController(reminder: reminder))
     }
 }

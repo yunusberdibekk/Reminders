@@ -1,16 +1,22 @@
 //
-//  SecondSectionView.swift
+//  ReminderDateInputView.swift
 //  Reminder
 //
-//  Created by Yunus Emre Berdibek on 17.02.2024.
+//  Created by Yunus Emre Berdibek on 22.02.2024.
 //
 
 import UIKit
 
-final class SecondSectionView: UIView {
-    private let symbolImage: SFSymbolView = .init(
-        imageName: "calendar",
-        backgroundColor: .systemRed)
+final class ReminderDateInputView: UIView {
+    private let imageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.image = UIImage(systemName: "calendar")?.withTintColor(.white, renderingMode: .alwaysOriginal)
+        imageView.backgroundColor = .systemRed
+        imageView.contentMode = .center
+        imageView.clipsToBounds = true
+        imageView.layer.cornerRadius = 5
+        return imageView
+    }()
 
     private let dateLabel: BodyLabel = .init(
         textAlignment: .left,
@@ -19,7 +25,6 @@ final class SecondSectionView: UIView {
 
     let switchView: UISwitch = {
         let switchView = UISwitch()
-        switchView.translatesAutoresizingMaskIntoConstraints = false
         switchView.isOn = false
         switchView.onTintColor = .green
         switchView.preferredStyle = .sliding
@@ -28,12 +33,10 @@ final class SecondSectionView: UIView {
 
     lazy var datePicker: UIDatePicker = {
         let datePicker = UIDatePicker()
-        datePicker.translatesAutoresizingMaskIntoConstraints = false
         datePicker.isHidden = true
         datePicker.alpha = 0
         datePicker.datePickerMode = .date
         datePicker.preferredDatePickerStyle = .inline
-        //    datePicker.locale = .current
         datePicker.date = .now
         datePicker.minimumDate = .now
         datePicker.maximumDate = .distantFuture
@@ -42,7 +45,6 @@ final class SecondSectionView: UIView {
 
     private let horizontalStackView: UIStackView = {
         let stackView: UIStackView = .init()
-        stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .horizontal
         stackView.spacing = 16
         return stackView
@@ -50,7 +52,6 @@ final class SecondSectionView: UIView {
 
     private let verticalStackView: UIStackView = {
         let stackView = UIStackView()
-        stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .vertical
         stackView.distribution = .fillProportionally
         return stackView
@@ -67,6 +68,14 @@ final class SecondSectionView: UIView {
         fatalError()
     }
 
+    public func configureSwitch(with date: Date?, _ isShowing: Bool) {
+        switchView.isOn = isShowing
+        datePicker.date = date ?? .distantFuture
+        didTapSwitch()
+    }
+}
+
+extension ReminderDateInputView {
     @objc
     private func didTapSwitch() {
         if switchView.isOn {
@@ -83,7 +92,7 @@ final class SecondSectionView: UIView {
     }
 }
 
-extension SecondSectionView {
+extension ReminderDateInputView {
     private func prepareView() {
         translatesAutoresizingMaskIntoConstraints = false
         backgroundColor = .systemBackground
@@ -94,21 +103,30 @@ extension SecondSectionView {
     }
 
     private func prepareVerticalStackView() {
-        horizontalStackView.addArrangedSubview(symbolImage)
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        horizontalStackView.addArrangedSubview(imageView)
+
+        dateLabel.translatesAutoresizingMaskIntoConstraints = false
         horizontalStackView.addArrangedSubview(dateLabel)
+
+        switchView.translatesAutoresizingMaskIntoConstraints = false
         horizontalStackView.addArrangedSubview(switchView)
 
+        horizontalStackView.translatesAutoresizingMaskIntoConstraints = false
         verticalStackView.addArrangedSubview(horizontalStackView)
+
+        datePicker.translatesAutoresizingMaskIntoConstraints = false
         verticalStackView.addArrangedSubview(datePicker)
+
+        verticalStackView.translatesAutoresizingMaskIntoConstraints = false
         addSubview(verticalStackView)
 
         NSLayoutConstraint.activate([
             verticalStackView.topAnchor.constraint(equalToSystemSpacingBelow: topAnchor, multiplier: 2),
             verticalStackView.leadingAnchor.constraint(equalToSystemSpacingAfter: leadingAnchor, multiplier: 1),
             trailingAnchor.constraint(equalToSystemSpacingAfter: verticalStackView.trailingAnchor, multiplier: 1),
-            bottomAnchor.constraint(equalToSystemSpacingBelow: verticalStackView.bottomAnchor, multiplier: 1)
+            bottomAnchor.constraint(equalToSystemSpacingBelow: verticalStackView.bottomAnchor, multiplier: 1),
         ])
-
-        symbolImage.widthAnchor.constraint(equalToConstant: 32).isActive = true
+        imageView.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 0.1).isActive = true
     }
 }

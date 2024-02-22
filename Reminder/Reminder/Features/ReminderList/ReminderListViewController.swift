@@ -34,6 +34,20 @@ final class ReminderListViewController: UIViewController {
     }
 }
 
+// MARK: - ReminderListViewController + Actions
+
+extension ReminderListViewController {
+    @objc private func didTappedCreateButton() {
+        viewModel.didTappedCreateButton()
+    }
+
+    @objc private func updateReminderList() {
+        viewModel.didCalledObservers()
+    }
+}
+
+// MARK: - ReminderListViewController + ReminderListViewControllerInterface Extension.
+
 extension ReminderListViewController: ReminderListViewControllerInterface {
     func prepareViewController() {
         view.backgroundColor = .secondarySystemBackground
@@ -75,15 +89,19 @@ extension ReminderListViewController: ReminderListViewControllerInterface {
             name: .updateReminderList,
             object: nil)
     }
+}
 
-    @objc private func didTappedCreateButton() {
-        viewModel.didTappedCreateButton()
-    }
+// MARK: - ReminderListViewController + ReminderListTableViewCellInterface Extension.
 
-    @objc private func updateReminderList() {
-        viewModel.didCalledObservers()
+extension ReminderListViewController: ReminderListTableViewCellInterface {
+    func didTapCheckedButton(_ reminder: Reminder?) {}
+
+    func didTapInfoButton(_ reminder: Reminder?) {
+        viewModel.didSelectRow(reminder)
     }
 }
+
+// MARK: - ReminderListViewController + UITableViewDataSource ,UITableViewDelegate Extension.
 
 extension ReminderListViewController: UITableViewDataSource, UITableViewDelegate {
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -100,13 +118,9 @@ extension ReminderListViewController: UITableViewDataSource, UITableViewDelegate
             for: indexPath) as! ReminderListTableViewCell
         let reminder = viewModel.reminders[indexPath.row]
 
-        cell.contentView.isUserInteractionEnabled = false
+        cell.delegate = self
         cell.configure(with: reminder)
         return cell
-    }
-
-    func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: true)
     }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -116,7 +130,9 @@ extension ReminderListViewController: UITableViewDataSource, UITableViewDelegate
         if descStringCount >= 100 {
             return 100
         } else if descStringCount >= 75 {
-            return 75
+            return 90
+        } else if descStringCount >= 50 {
+            return 80
         } else {
             return 60
         }

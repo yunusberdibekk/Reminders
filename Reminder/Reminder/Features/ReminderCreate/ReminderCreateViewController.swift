@@ -7,44 +7,56 @@
 
 import UIKit
 
-protocol ReminderCreateViewControllerInterface: AnyObject {
+protocol ReminderCreateViewControllerInterface: AnyObject, Dismissable {
     var reminderTitle: String? { get }
     var reminderDescription: String? { get }
     var isOn: Bool { get }
     var date: Date { get }
 
-    func prepareViewController()
-    func dismiss()
+    func prepareView()
+    func prepareNavigationBar()
+    func prepareReminderTextInputView()
+    func prepareReminderDateInputView()
 }
 
 final class ReminderCreateViewController: UIViewController {
+    // MARK: - UI Components.
+
+    private let reminderTextInputView: ReminderTextInputView = .init()
+    private let reminderDateInputView: ReminderDateInputView = .init()
+
+    // MARK: - Variables.
+
     private lazy var viewModel: ReminderCreateViewModelInterface = ReminderCreateViewModel()
 
-    private let firstSectionView: FirstSectionView = .init()
-    private let secondSectionView: SecondSectionView = .init()
-
     var reminderTitle: String? {
-        firstSectionView.titleTextField.text
+        reminderTextInputView.titleTextField.text
     }
 
     var reminderDescription: String? {
-        firstSectionView.descriptionTextField.text
+        reminderTextInputView.descriptionTextView.text
     }
 
     var isOn: Bool {
-        secondSectionView.switchView.isOn
+        reminderDateInputView.switchView.isOn
     }
 
     var date: Date {
-        secondSectionView.datePicker.date
+        reminderDateInputView.datePicker.date
     }
+
+    // MARK: - Lifecycle.
 
     override func viewDidLoad() {
         super.viewDidLoad()
         viewModel.view = self
         viewModel.viewDidLoad()
     }
+}
 
+// MARK: - ReminderCreateViewController + Actions.
+
+extension ReminderCreateViewController {
     @objc private func didTapCancelButton() {
         viewModel.didTapCancelButton()
     }
@@ -54,22 +66,15 @@ final class ReminderCreateViewController: UIViewController {
     }
 }
 
+// MARK: - ReminderCreateViewController + ReminderCreateViewControllerInterface Extension.
+
 extension ReminderCreateViewController: ReminderCreateViewControllerInterface {
-    func prepareViewController() {
+    func prepareView() {
         view.backgroundColor = .secondarySystemBackground
-        prepareNavigationBar()
-        prepareFirstSectionView()
-        prepareSecondSectionView()
-    }
-
-    func dismiss() {
-        dismiss(animated: true)
-    }
-}
-
-extension ReminderCreateViewController {
-    private func prepareNavigationBar() {
         title = "Create"
+    }
+
+    func prepareNavigationBar() {
         navigationItem.leftBarButtonItem = UIBarButtonItem(
             title: "Cancel",
             style: .plain,
@@ -82,25 +87,26 @@ extension ReminderCreateViewController {
             action: #selector(didTapDoneButton))
     }
 
-    private func prepareFirstSectionView() {
-        firstSectionView.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(firstSectionView)
+    func prepareReminderTextInputView() {
+        reminderTextInputView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(reminderTextInputView)
 
         NSLayoutConstraint.activate([
-            firstSectionView.topAnchor.constraint(equalToSystemSpacingBelow: view.safeAreaLayoutGuide.topAnchor, multiplier: 4),
-            firstSectionView.leadingAnchor.constraint(equalToSystemSpacingAfter: view.leadingAnchor, multiplier: 2),
-            view.trailingAnchor.constraint(equalToSystemSpacingAfter: firstSectionView.trailingAnchor, multiplier: 2)
+            reminderTextInputView.topAnchor.constraint(equalToSystemSpacingBelow: view.safeAreaLayoutGuide.topAnchor, multiplier: 2),
+            reminderTextInputView.leadingAnchor.constraint(equalToSystemSpacingAfter: view.leadingAnchor, multiplier: 2),
+            view.trailingAnchor.constraint(equalToSystemSpacingAfter: reminderTextInputView.trailingAnchor, multiplier: 2),
+            reminderTextInputView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.2),
         ])
     }
 
-    private func prepareSecondSectionView() {
-        secondSectionView.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(secondSectionView)
+    func prepareReminderDateInputView() {
+        reminderDateInputView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(reminderDateInputView)
 
         NSLayoutConstraint.activate([
-            secondSectionView.topAnchor.constraint(equalToSystemSpacingBelow: firstSectionView.bottomAnchor, multiplier: 2),
-            secondSectionView.leadingAnchor.constraint(equalToSystemSpacingAfter: view.leadingAnchor, multiplier: 2),
-            view.trailingAnchor.constraint(equalToSystemSpacingAfter: secondSectionView.trailingAnchor, multiplier: 2)
+            reminderDateInputView.topAnchor.constraint(equalToSystemSpacingBelow: reminderTextInputView.bottomAnchor, multiplier: 2),
+            reminderDateInputView.leadingAnchor.constraint(equalToSystemSpacingAfter: view.leadingAnchor, multiplier: 2),
+            view.trailingAnchor.constraint(equalToSystemSpacingAfter: reminderDateInputView.trailingAnchor, multiplier: 2),
         ])
     }
 }

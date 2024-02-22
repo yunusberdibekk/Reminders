@@ -1,28 +1,40 @@
 //
-//  FirstSectionView.swift
+//  ReminderTextInputView.swift
 //  Reminder
 //
-//  Created by Yunus Emre Berdibek on 17.02.2024.
+//  Created by Yunus Emre Berdibek on 22.02.2024.
 //
 
 import UIKit
 
-final class FirstSectionView: UIView {
-    lazy var titleTextField: CustomTextField = .init(
-        placeholder: "Title")
+final class ReminderTextInputView: UIView {
+    let titleTextField: UITextField = {
+        let textField = UITextField()
+        textField.font = UIFont.preferredFont(forTextStyle: .title3)
+        textField.placeholder = "Title"
+        textField.textColor = .lightGray
+        textField.textAlignment = .left
+        return textField
+    }()
 
-    lazy var descriptionTextField: CustomTextField = .init(placeholder: "Description")
+    let descriptionTextView: UITextView = {
+        let textView = UITextView()
+        textView.font = UIFont.preferredFont(forTextStyle: .callout)
+        textView.textColor = .lightGray
+        textView.textAlignment = .left
 
-    lazy var dividerView: UIView = {
+        return textView
+    }()
+
+    private let dividerView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = .secondarySystemFill
         return view
     }()
 
-    lazy var stackView: UIStackView = {
+    private let stackView: UIStackView = {
         let stackView = UIStackView()
-        stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .vertical
         stackView.spacing = 8
         return stackView
@@ -31,7 +43,6 @@ final class FirstSectionView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         prepareView()
-        prepareStackView()
     }
 
     @available(*, unavailable)
@@ -40,30 +51,34 @@ final class FirstSectionView: UIView {
     }
 }
 
-extension FirstSectionView {
+extension ReminderTextInputView {
     private func prepareView() {
-        translatesAutoresizingMaskIntoConstraints = false
         backgroundColor = .systemBackground
-        layer.cornerRadius = 5
+        layer.cornerRadius = 8
         clipsToBounds = true
+
+        prepareStackView()
     }
 
     private func prepareStackView() {
         titleTextField.translatesAutoresizingMaskIntoConstraints = false
-        descriptionTextField.translatesAutoresizingMaskIntoConstraints = false
-
         stackView.addArrangedSubview(titleTextField)
+
+        dividerView.translatesAutoresizingMaskIntoConstraints = false
         stackView.addArrangedSubview(dividerView)
-        stackView.addArrangedSubview(descriptionTextField)
+
+        descriptionTextView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.addArrangedSubview(descriptionTextView)
+
+        stackView.translatesAutoresizingMaskIntoConstraints = false
         addSubview(stackView)
 
         NSLayoutConstraint.activate([
             stackView.topAnchor.constraint(equalToSystemSpacingBelow: topAnchor, multiplier: 1),
             stackView.leadingAnchor.constraint(equalToSystemSpacingAfter: leadingAnchor, multiplier: 1),
             trailingAnchor.constraint(equalToSystemSpacingAfter: stackView.trailingAnchor, multiplier: 1),
-            bottomAnchor.constraint(equalToSystemSpacingBelow: stackView.bottomAnchor, multiplier: 1)
+            bottomAnchor.constraint(equalToSystemSpacingBelow: stackView.bottomAnchor, multiplier: 1),
         ])
         dividerView.heightAnchor.constraint(equalToConstant: 1).isActive = true
-        titleTextField.becomeFirstResponder()
     }
 }
